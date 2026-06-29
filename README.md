@@ -24,6 +24,16 @@ bash run_local.sh /work/lead/mk657917/SKINET/data/raw/cortex/HI14010577B2.jpg
 That's it. Replace the path with your own image (`.jpg`, `.png`, `.tif`, `.jp2`).
 Add `--sam` for SAM-Med2D refinement.
 
+**On the CCuB cluster**, the login node's GPU is too old to run the pipeline, so
+submit to a GPU compute node by adding `--qsub`:
+
+```bash
+bash run_local.sh /work/lead/mk657917/SKINET/data/raw/cortex/HI14010577B2.jpg --qsub
+```
+
+The job runs on a V100 node; logs go to `~/skinet-runs/logs/`. Omit `--qsub`
+only on a machine whose own GPU is recent enough (not a Tesla K80).
+
 ## Results
 
 Written to `~/skinet-runs/outputs/test/`:

@@ -1,18 +1,16 @@
 #!/bin/bash
 # =============================================================================
-#  run_local.sh -- run the SKINET pipeline directly (no qsub, no scheduler).
+#  run_local.sh -- run the SKINET pipeline. Two modes:
 #
-#  For running on a plain server / interactively, by raw shell launch.
-#  It sets up the environment and calls scripts/e7_run.py in the foreground,
-#  so you see the output live.
+#    bash run_local.sh <image.jpg>           run HERE (needs a compatible GPU)
+#    bash run_local.sh <image.jpg> --qsub    submit to a GPU node (CCuB cluster)
+#    bash run_local.sh <image.jpg> --sam     add SAM-Med2D refinement
 #
-#  USAGE:
-#     bash run_local.sh <image.jpg>                  # one image -> overlay + masks
-#     bash run_local.sh <image.jpg> --sam            # + SAM-Med2D refinement
-#     bash run_local.sh --source <KEY> --all ...     # pass any e7_run.py flags
+#  On the CCuB login node use --qsub: the login node's GPU (K80) is too old, so
+#  the job must run on a V100 compute node. On your own machine with a modern
+#  GPU, omit --qsub to run directly in the foreground.
 #
-#  CONFIG: edit the paths below, or export them before calling. Defaults match
-#  the CCuB shared install. The script needs a GPU-visible machine.
+#  CONFIG: edit the paths below, or export them before calling.
 # =============================================================================
 set -uo pipefail
 
@@ -34,9 +32,26 @@ SDIR="${SKINET_SCRIPTS_DIR:-$HERE/scripts}"
 [ -f "$SDIR/e7_run.py" ] || { echo "ERROR: cannot find e7_run.py (set SKINET_SCRIPTS_DIR)"; exit 1; }
 
 if [ "$#" -lt 1 ]; then
-  echo "usage: bash run_local.sh <image> [extra e7_run.py flags]"
-  echo "   or: bash run_local.sh --source <KEY> [flags]"
+  echo "usage: bash run_local.sh <image> [flags]        # run here (needs local GPU)"
+  echo "   or: bash run_local.sh <image> --qsub [flags] # submit to a GPU node (CCuB)"
   exit 1
+fi
+
+# ---- mode select: --qsub submits THIS script to a GPU compute node -----------
+# On CCuB the login node has an old K80 (unsupported); --qsub lands the job on a
+# V100. Without --qsub the pipeline runs right here (needs a compatible GPU).
+if [ "${1:-}" = "--qsub" ] || [ "${2:-}" = "--qsub" ] || printf '%s\n' "$@" | grep -qx -- "--qsub"; then
+  command -v qsub >/dev/null 2>&1 || { echo "ERROR: --qsub given but qsub not found (not on a cluster?)"; exit 1; }
+  # strip --qsub from the args; keep the rest verbatim
+  ARGS=(); for a in "$@"; do [ "$a" = "--qsub" ] || ARGS+=("$a"); done
+  LOGDIR="${SKINET_LOGDIR:-$HOME/skinet-runs/logs}"; mkdir -p "$LOGDIR"
+  QUEUE="${SKINET_QUEUE:-gpu}"
+  echo "Submitting to '$QUEUE' (the job will run on a GPU compute node)..."
+  qsub -q "$QUEUE" -N skinet -j y -o "$LOGDIR/skinet_\$JOB_ID.log" \
+       -v "SKINET_ROOT=$SKINET_ROOT,SKINET_OLD_ROOT=$SKINET_OLD_ROOT" \
+       "$HERE/run_local.sh" "${ARGS[@]}"
+  echo "Use 'qstat' to see the job; logs go to $LOGDIR/"
+  exit 0
 fi
 
 # If the first arg is a file, treat it as --image with auto --source.
