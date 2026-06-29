@@ -47,9 +47,12 @@ if [ "${1:-}" = "--qsub" ] || [ "${2:-}" = "--qsub" ] || printf '%s\n' "$@" | gr
   LOGDIR="${SKINET_LOGDIR:-$HOME/skinet-runs/logs}"; mkdir -p "$LOGDIR"
   QUEUE="${SKINET_QUEUE:-gpu}"
   echo "Submitting to '$QUEUE' (the job will run on a GPU compute node)..."
+  # Pass the resolved scripts dir so the node finds e7_run.py regardless of
+  # where SGE spools the job script. $HERE is the real repo path at submit time.
+  RUNNER="$HERE/run_local.sh"
   qsub -q "$QUEUE" -N skinet -j y -o "$LOGDIR/skinet_\$JOB_ID.log" \
-       -v "SKINET_ROOT=$SKINET_ROOT,SKINET_OLD_ROOT=$SKINET_OLD_ROOT" \
-       "$HERE/run_local.sh" "${ARGS[@]}"
+       -v "SKINET_SCRIPTS_DIR=$SDIR" \
+       "$RUNNER" "${ARGS[@]}"
   echo "Use 'qstat' to see the job; logs go to $LOGDIR/"
   exit 0
 fi
