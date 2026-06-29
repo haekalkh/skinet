@@ -19,6 +19,7 @@ dependencies:
   - pandas
   - opencv
   - pycocotools
+  - matplotlib
   - pillow
   - scipy
   - pytorch

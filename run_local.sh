@@ -30,8 +30,7 @@ OUTDIR="${SKINET_OUTDIR:-$HOME/skinet-runs/outputs/test}"
 
 # scripts dir = the scripts/ folder next to this file
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SDIR="${SKINET_SCRIPTS_DIR:-$HERE/skinet/scripts}"
-[ -f "$SDIR/e7_run.py" ] || SDIR="$HERE/scripts"            # fallback layout
+SDIR="${SKINET_SCRIPTS_DIR:-$HERE/scripts}"
 [ -f "$SDIR/e7_run.py" ] || { echo "ERROR: cannot find e7_run.py (set SKINET_SCRIPTS_DIR)"; exit 1; }
 
 if [ "$#" -lt 1 ]; then
@@ -72,6 +71,23 @@ export PYTHONPATH="$PP"
 export SKINET_ROOT SKINET_OLD_ROOT
 
 mkdir -p "$OUTDIR"
+
+# ---- early GPU check: fail fast with a clear message (not mid-pipeline) -----
+python - << 'PYGPU'
+import sys
+try:
+    import torch
+except Exception as e:
+    print(f"WARN: could not import torch ({e})"); sys.exit(0)
+if torch.cuda.is_available():
+    print(f"GPU detected: {torch.cuda.get_device_name(0)}")
+else:
+    print("=" * 60)
+    print("WARNING: no GPU visible to PyTorch.")
+    print("Run this on a GPU compute node / server, NOT the login node.")
+    print("The pipeline will be extremely slow or fail without a GPU.")
+    print("=" * 60)
+PYGPU
 
 # ---- run e7_run.py directly (foreground) ------------------------------------
 set -x
