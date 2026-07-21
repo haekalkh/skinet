@@ -1,0 +1,12 @@
+{
+  "tubule_sain": 0.9,
+  "tubule_atrophique": 0.85,
+  "vaisseau": 0.85,
+  "nsg": 0.95,
+  "intima": 0.65,
+  "nsg_partiel": 0.75,
+  "media": 0.85,
+  "veine": 0.85,
+  "nsg_complet": 0.95,
+  "pac": 0.9
+}
