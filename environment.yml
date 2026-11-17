@@ -1,0 +1,14 @@
+# Conda environment for SKINET-M2F (base packages).
+# PyTorch, detectron2 and Mask2Former are installed by ./install.sh, because
+# they must match your CUDA driver and be compiled on your machine.
+#
+#   ./install.sh            # creates this env and installs everything
+name: skinet
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pip
+  - ninja
+  - pip:
+      - -r requirements.txt

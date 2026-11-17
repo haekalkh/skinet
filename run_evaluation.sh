@@ -15,7 +15,8 @@ RUN="${1:?usage: $0 RUN_NAME [--weights file]}"; shift
 W=()
 [ "$1" = "--weights" ] && { W=(--weights "$(cd "$(dirname "$2")" && pwd)/$(basename "$2")"); shift 2; }
 export M2F_WORK_DIR="${M2F_WORK_DIR:-$HERE/work}"
-export PYTHONPATH="$HERE/skinet_m2f${M2F_ROOT:+:$M2F_ROOT}${PYTHONPATH:+:$PYTHONPATH}"
+M2F_ROOT="${M2F_ROOT:-$HERE/third_party/Mask2Former}"
+export PYTHONPATH="$HERE/skinet_m2f:$M2F_ROOT${PYTHONPATH:+:$PYTHONPATH}"
 cd "$HERE/skinet_m2f"
 WD="$M2F_WORK_DIR"; TAG=_base050
 

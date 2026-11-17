@@ -12,3 +12,6 @@ __pycache__/
 *.pyc
 .DS_Store
 ._*
+
+# Mask2Former checkout created by install.sh
+third_party/

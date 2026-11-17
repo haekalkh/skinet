@@ -50,7 +50,8 @@ for f in "$WEIGHTS" "$SKINET_CORTEX_WEIGHTS" "$THRESHOLDS"; do
 done
 
 export M2F_WORK_DIR="$WORK"
-export PYTHONPATH="$HERE/skinet_m2f${M2F_ROOT:+:$M2F_ROOT}${PYTHONPATH:+:$PYTHONPATH}"
+M2F_ROOT="${M2F_ROOT:-$HERE/third_party/Mask2Former}"
+export PYTHONPATH="$HERE/skinet_m2f:$M2F_ROOT${PYTHONPATH:+:$PYTHONPATH}"
 python -c "import mask2former" 2>/dev/null || {
     echo "mask2former is not importable. Install it (docs/INSTALL.md) or set M2F_ROOT"
     echo "to the folder of the Mask2Former repository."; exit 4; }

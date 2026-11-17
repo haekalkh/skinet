@@ -14,7 +14,16 @@ NVIDIA V100S / A100). Newer versions generally work; these are the known-good on
 | fvcore / iopath | 0.1.5.post20221221 / 0.1.9 |
 | pycocotools, scikit-learn, timm, scipy, Pillow | recent |
 
-## Steps
+## Quick install
+
+```bash
+./install.sh            # GPU
+./install.sh --cpu      # CPU only
+```
+
+The script runs the steps below. Use them directly if it fails on your system.
+
+## Manual steps
 
 ```bash
 conda create -n skinet python=3.10 -y
@@ -31,7 +40,7 @@ pip install 'git+https://github.com/facebookresearch/detectron2.git'
 git clone https://github.com/facebookresearch/Mask2Former.git
 pip install -r Mask2Former/requirements.txt
 cd Mask2Former/mask2former/modeling/pixel_decoder/ops && sh make.sh && cd -
-export M2F_ROOT=$PWD/Mask2Former          # the run_*.sh scripts add it to PYTHONPATH
+export M2F_ROOT=$PWD/Mask2Former   # run_*.sh default to third_party/Mask2Former otherwise
 
 # 4. Pipeline requirements
 pip install -r requirements.txt

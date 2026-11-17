@@ -20,8 +20,16 @@ UMR5022 / Université Bourgogne Europe, with CHU Dijon Bourgogne, 2026).
 
 ## 1. Install
 
-See [docs/INSTALL.md](docs/INSTALL.md). In short: Python 3.10, PyTorch with CUDA,
-detectron2, and the Mask2Former repository with its MSDeformAttn CUDA op compiled.
+```bash
+git clone https://github.com/haekalkh/skinet.git
+cd skinet
+./install.sh              # or: ./install.sh --cpu
+conda activate skinet
+```
+
+`install.sh` creates the conda env, installs PyTorch 1.13.1, detectron2 and
+Mask2Former (into `third_party/`), compiles the MSDeformAttn CUDA op and checks
+the imports. Manual steps and exact versions: [docs/INSTALL.md](docs/INSTALL.md).
 
 ## 2. Get the models
 
@@ -83,7 +91,8 @@ command and settings that produced its output.
 ## Repository layout
 
 ```
-run_inference.sh  run_training.sh  run_evaluation.sh  download_models.sh
+install.sh  download_models.sh  run_inference.sh  run_training.sh  run_evaluation.sh
+environment.yml  requirements.txt
 skinet_m2f/        pipeline stages and config.py
 configs/           Mask2Former config, per-class thresholds of the released model
 models/            released weights (downloaded), SHA256SUMS

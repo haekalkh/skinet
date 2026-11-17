@@ -22,7 +22,8 @@ set -eo pipefail
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 RUN="${1:-my_run}"; shift || true
 export M2F_WORK_DIR="${M2F_WORK_DIR:-$HERE/work}"
-export PYTHONPATH="$HERE/skinet_m2f${M2F_ROOT:+:$M2F_ROOT}${PYTHONPATH:+:$PYTHONPATH}"
+M2F_ROOT="${M2F_ROOT:-$HERE/third_party/Mask2Former}"
+export PYTHONPATH="$HERE/skinet_m2f:$M2F_ROOT${PYTHONPATH:+:$PYTHONPATH}"
 cd "$HERE/skinet_m2f"
 
 echo "=== stage 01: audit raw data in ${SKINET_RAW_DIR:-$HERE/data/raw}"
