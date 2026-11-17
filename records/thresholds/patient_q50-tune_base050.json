@@ -1,0 +1,19 @@
+{
+  "run": "patient_q50",
+  "tuned_on": "val",
+  "detect_iou": 0.3,
+  "macro_f1_before": 0.6388,
+  "macro_f1_after": 0.6802,
+  "thresholds": {
+    "tubule_sain": 0.75,
+    "tubule_atrophique": 0.75,
+    "vaisseau": 0.8,
+    "nsg": 0.7,
+    "intima": 0.7,
+    "nsg_partiel": 0.55,
+    "media": 0.75,
+    "veine": 0.6,
+    "nsg_complet": 0.5,
+    "pac": 0.75
+  }
+}

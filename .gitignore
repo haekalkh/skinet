@@ -1,73 +1,14 @@
-# ===========================================================================
-#  NEVER commit large or sensitive artefacts to a PUBLIC repo.
-# ===========================================================================
-
-# --- model weights / checkpoints (large, not for git) ---
-*.pth
-*.pkl
-*.pt
-*.ckpt
-*.safetensors
-weights/
-checkpoints/
-
-# --- patient / clinical data (NEVER commit) ---
-*.jp2
-*.svs
-*.ndpi
-*.tif
-*.tiff
-*.jpg
-*.jpeg
-*.png
-*.xml
+# model files are distributed as GitHub release assets, not in git
+models/*.pth
+models/*.pkl
+models/pretrained/
+*.part
+# data and everything the pipeline writes
 data/
-raw/
-
-# --- pipeline outputs / runs / logs ---
-outputs/
-skinet-runs/
-*.log
-overlay*/
-*_overlay.*
-*_tissuedbg.*
-metrics/
-
-# --- python ---
+work/
+reports/
+stage07_overlays/
 __pycache__/
-*.py[cod]
-*.egg-info/
-*.egg
-build/
-dist/
-.eggs/
-*.whl
-.installed.cfg
-
-# --- environments ---
-.venv/
-venv/
-env/
-.conda/
-*.conda
-
-# --- editors / OS ---
-.vscode/
-.idea/
+*.pyc
 .DS_Store
-*.swp
-*~
-
-# --- caches ---
-.cache/
-.pytest_cache/
-.mypy_cache/
-.ipynb_checkpoints/
-
-# --- effective config written at runtime (per-user, machine-specific) ---
-.skinet-effective.env
-skinet.env
-
-# Allow the example config + docs images
-!skinet/skinet.env.example
-!docs/**/*.png
+._*

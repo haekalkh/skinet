@@ -1,0 +1,125 @@
+# Mask2Former Swin-B instance-segmentation config used by SKINET-M2F.
+#
+# Recovered from the full configuration that detectron2 printed at the start of
+# a training run on the CCuB cluster (same initial weights and base LR as the
+# released models), reduced to the keys that define the model, the optimiser
+# and the input pipeline. Architecture values agree with the shapes stored in
+# the released checkpoints. The pipeline overrides NUM_CLASSES, the schedule
+# length, LR schedule, seed and output paths from skinet_m2f/config.py and the
+# command line, so those values here are only defaults.
+#
+# The original training run used RepeatFactorTrainingSampler; the released
+# models did NOT (plain TrainingSampler), which is what is set below.
+DATALOADER: {FILTER_EMPTY_ANNOTATIONS: true, NUM_WORKERS: 4, SAMPLER_TRAIN: TrainingSampler}
+DATASETS:
+  TEST: []
+  TRAIN: []
+INPUT:
+  COLOR_AUG_SSD: false
+  CROP:
+    ENABLED: false
+    SINGLE_CATEGORY_MAX_AREA: 1.0
+    SIZE: [0.9, 0.9]
+    TYPE: relative_range
+  DATASET_MAPPER_NAME: coco_instance_lsj
+  FORMAT: BGR
+  IMAGE_SIZE: 1024
+  MASK_FORMAT: bitmask
+  MAX_SCALE: 2.0
+  MAX_SIZE_TEST: 1024
+  MAX_SIZE_TRAIN: 1333
+  MIN_SCALE: 0.5
+  MIN_SIZE_TEST: 1024
+  MIN_SIZE_TRAIN: [800]
+  MIN_SIZE_TRAIN_SAMPLING: choice
+  RANDOM_FLIP: horizontal
+  SIZE_DIVISIBILITY: -1
+MODEL:
+  BACKBONE: {FREEZE_AT: 0, NAME: D2SwinTransformer}
+  MASK_FORMER:
+    CLASS_WEIGHT: 2.0
+    DEC_LAYERS: 10
+    DEEP_SUPERVISION: true
+    DICE_WEIGHT: 5.0
+    DIM_FEEDFORWARD: 2048
+    DROPOUT: 0.0
+    ENC_LAYERS: 0
+    ENFORCE_INPUT_PROJ: false
+    HIDDEN_DIM: 256
+    IMPORTANCE_SAMPLE_RATIO: 0.75
+    MASK_WEIGHT: 5.0
+    NHEADS: 8
+    NO_OBJECT_WEIGHT: 0.1
+    NUM_OBJECT_QUERIES: 100
+    OVERSAMPLE_RATIO: 3.0
+    PRE_NORM: false
+    SIZE_DIVISIBILITY: 32
+    TEST: {INSTANCE_ON: true, OBJECT_MASK_THRESHOLD: 0.8, OVERLAP_THRESHOLD: 0.8,
+      PANOPTIC_ON: false, SEMANTIC_ON: false, SEM_SEG_POSTPROCESSING_BEFORE_INFERENCE: false}
+    TRAIN_NUM_POINTS: 12544
+    TRANSFORMER_DECODER_NAME: MultiScaleMaskedTransformerDecoder
+    TRANSFORMER_IN_FEATURE: multi_scale_pixel_decoder
+  META_ARCHITECTURE: MaskFormer
+  PIXEL_MEAN: [123.675, 116.28, 103.53]
+  PIXEL_STD: [58.395, 57.12, 57.375]
+  SEM_SEG_HEAD:
+    ASPP_CHANNELS: 256
+    ASPP_DILATIONS: [6, 12, 18]
+    ASPP_DROPOUT: 0.1
+    COMMON_STRIDE: 4
+    CONVS_DIM: 256
+    DEFORMABLE_TRANSFORMER_ENCODER_IN_FEATURES: [res3, res4, res5]
+    DEFORMABLE_TRANSFORMER_ENCODER_N_HEADS: 8
+    DEFORMABLE_TRANSFORMER_ENCODER_N_POINTS: 4
+    IGNORE_VALUE: 255
+    IN_FEATURES: [res2, res3, res4, res5]
+    LOSS_TYPE: hard_pixel_mining
+    LOSS_WEIGHT: 1.0
+    MASK_DIM: 256
+    NAME: MaskFormerHead
+    NORM: GN
+    NUM_CLASSES: 10
+    PIXEL_DECODER_NAME: MSDeformAttnPixelDecoder
+    PROJECT_CHANNELS: [48]
+    PROJECT_FEATURES: [res2]
+    TRANSFORMER_ENC_LAYERS: 6
+    USE_DEPTHWISE_SEPARABLE_CONV: false
+  SWIN:
+    APE: false
+    ATTN_DROP_RATE: 0.0
+    DEPTHS: [2, 2, 18, 2]
+    DROP_PATH_RATE: 0.3
+    DROP_RATE: 0.0
+    EMBED_DIM: 128
+    MLP_RATIO: 4.0
+    NUM_HEADS: [4, 8, 16, 32]
+    OUT_FEATURES: [res2, res3, res4, res5]
+    PATCH_NORM: true
+    PATCH_SIZE: 4
+    PRETRAIN_IMG_SIZE: 384
+    QKV_BIAS: true
+    QK_SCALE: null
+    USE_CHECKPOINT: false
+    WINDOW_SIZE: 12
+  WEIGHTS: ''
+SOLVER:
+  AMP: {ENABLED: true}
+  BACKBONE_MULTIPLIER: 0.1
+  BASE_LR: 2.5e-05
+  CHECKPOINT_PERIOD: 2500
+  CLIP_GRADIENTS: {CLIP_TYPE: full_model, CLIP_VALUE: 0.01, ENABLED: true, NORM_TYPE: 2.0}
+  GAMMA: 0.1
+  IMS_PER_BATCH: 1
+  LR_SCHEDULER_NAME: WarmupMultiStepLR
+  MAX_ITER: 40000
+  MOMENTUM: 0.9
+  OPTIMIZER: ADAMW
+  STEPS: [28000, 36000]
+  WARMUP_FACTOR: 0.001
+  WARMUP_ITERS: 1000
+  WARMUP_METHOD: linear
+  WEIGHT_DECAY: 0.05
+  WEIGHT_DECAY_EMBED: 0.0
+  WEIGHT_DECAY_NORM: 0.0
+TEST: {DETECTIONS_PER_IMAGE: 100, EVAL_PERIOD: 2500}
+VERSION: 2

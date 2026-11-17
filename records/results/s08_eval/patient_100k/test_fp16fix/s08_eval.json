@@ -1,0 +1,156 @@
+{
+  "run": "patient_100k",
+  "split": "test",
+  "n_sources": 44,
+  "detect_iou": 0.3,
+  "strict_iou": 0.5,
+  "per_class": {
+    "tubule_sain": {
+      "n_gt": 1196,
+      "n_pred": 1421,
+      "tp": 1099,
+      "fp": 322,
+      "fn": 97,
+      "precision": 0.7734,
+      "recall": 0.9189,
+      "f1": 0.8399,
+      "f1_strict": 0.8277,
+      "mean_iou": 0.913,
+      "mean_dice": 0.9503
+    },
+    "tubule_atrophique": {
+      "n_gt": 618,
+      "n_pred": 551,
+      "tp": 330,
+      "fp": 221,
+      "fn": 288,
+      "precision": 0.5989,
+      "recall": 0.534,
+      "f1": 0.5646,
+      "f1_strict": 0.5543,
+      "mean_iou": 0.851,
+      "mean_dice": 0.9156
+    },
+    "vaisseau": {
+      "n_gt": 63,
+      "n_pred": 58,
+      "tp": 45,
+      "fp": 13,
+      "fn": 18,
+      "precision": 0.7759,
+      "recall": 0.7143,
+      "f1": 0.7438,
+      "f1_strict": 0.6942,
+      "mean_iou": 0.8034,
+      "mean_dice": 0.8803
+    },
+    "nsg": {
+      "n_gt": 56,
+      "n_pred": 46,
+      "tp": 46,
+      "fp": 0,
+      "fn": 10,
+      "precision": 1.0,
+      "recall": 0.8214,
+      "f1": 0.902,
+      "f1_strict": 0.902,
+      "mean_iou": 0.9378,
+      "mean_dice": 0.9667
+    },
+    "intima": {
+      "n_gt": 52,
+      "n_pred": 55,
+      "tp": 37,
+      "fp": 18,
+      "fn": 15,
+      "precision": 0.6727,
+      "recall": 0.7115,
+      "f1": 0.6916,
+      "f1_strict": 0.6355,
+      "mean_iou": 0.7814,
+      "mean_dice": 0.868
+    },
+    "nsg_partiel": {
+      "n_gt": 39,
+      "n_pred": 28,
+      "tp": 23,
+      "fp": 5,
+      "fn": 16,
+      "precision": 0.8214,
+      "recall": 0.5897,
+      "f1": 0.6866,
+      "f1_strict": 0.6567,
+      "mean_iou": 0.8199,
+      "mean_dice": 0.8904
+    },
+    "media": {
+      "n_gt": 35,
+      "n_pred": 48,
+      "tp": 26,
+      "fp": 22,
+      "fn": 9,
+      "precision": 0.5417,
+      "recall": 0.7429,
+      "f1": 0.6265,
+      "f1_strict": 0.6024,
+      "mean_iou": 0.7902,
+      "mean_dice": 0.8772
+    },
+    "veine": {
+      "n_gt": 13,
+      "n_pred": 18,
+      "tp": 8,
+      "fp": 10,
+      "fn": 5,
+      "precision": 0.4444,
+      "recall": 0.6154,
+      "f1": 0.5161,
+      "f1_strict": 0.5161,
+      "mean_iou": 0.8664,
+      "mean_dice": 0.9252
+    },
+    "nsg_complet": {
+      "n_gt": 23,
+      "n_pred": 20,
+      "tp": 18,
+      "fp": 2,
+      "fn": 5,
+      "precision": 0.9,
+      "recall": 0.7826,
+      "f1": 0.8372,
+      "f1_strict": 0.7907,
+      "mean_iou": 0.9093,
+      "mean_dice": 0.948
+    },
+    "pac": {
+      "n_gt": 14,
+      "n_pred": 17,
+      "tp": 13,
+      "fp": 4,
+      "fn": 1,
+      "precision": 0.7647,
+      "recall": 0.9286,
+      "f1": 0.8387,
+      "f1_strict": 0.8387,
+      "mean_iou": 0.8929,
+      "mean_dice": 0.9426
+    }
+  },
+  "macro_all": {
+    "precision": 0.7293,
+    "recall": 0.7359,
+    "f1": 0.7247,
+    "f1_strict": 0.7018,
+    "mean_dice": 0.9164
+  },
+  "macro_hard": {
+    "precision": 0.6793,
+    "recall": 0.6701,
+    "f1": 0.6666
+  },
+  "macro_easy": {
+    "precision": 0.846,
+    "recall": 0.8896,
+    "f1": 0.8602
+  }
+}

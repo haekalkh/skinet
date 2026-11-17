@@ -1,0 +1,19 @@
+{
+  "run": "patient_40k_s43",
+  "tuned_on": "val",
+  "detect_iou": 0.3,
+  "macro_f1_before": 0.6413,
+  "macro_f1_after": 0.6735,
+  "thresholds": {
+    "tubule_sain": 0.8,
+    "tubule_atrophique": 0.7,
+    "vaisseau": 0.8,
+    "nsg": 0.8,
+    "intima": 0.8,
+    "nsg_partiel": 0.75,
+    "media": 0.65,
+    "veine": 0.5,
+    "nsg_complet": 0.5,
+    "pac": 0.8
+  }
+}

@@ -1,0 +1,294 @@
+{
+  "stage": "s07_postproc",
+  "finished_at": "2026-08-12T15:12:58",
+  "command": "s07_postproc.py --run patient_100k --split test --tag _prod_16EH12620 --in-dir /work/lead/mk657917/M2F-ANATOMY/work_patient/s06_stitch/patient_100k/test_prod_16EH12620/stitched --thresholds /work/lead/mk657917/M2F-ANATOMY/work_patient/s09_tune/patient_100k/tune_base050/thresholds.json --score-resolve tubule_sain tubule_atrophique",
+  "python": "3.10.18",
+  "host": "webern50.u-bourgogne.fr",
+  "git_hash": null,
+  "settings": {
+    "raw_img_dir": "/work/lead/mk657917/SKINET/data/raw/main",
+    "raw_xml_dir": "/work/lead/mk657917/SKINET/data/raw/main",
+    "work_dir": "/work/lead/mk657917/M2F-ANATOMY/work_patient",
+    "structure_classes": [
+      "tubule_sain",
+      "tubule_atrophique",
+      "vaisseau",
+      "nsg",
+      "intima",
+      "nsg_partiel",
+      "media",
+      "veine",
+      "nsg_complet",
+      "pac"
+    ],
+    "region_classes": [
+      "cortex",
+      "capsule",
+      "medullaire"
+    ],
+    "other_classes": [
+      "artefact"
+    ],
+    "split_seed": 42,
+    "split_fractions": [
+      0.7,
+      0.15,
+      0.15
+    ],
+    "tile_size": 1024,
+    "overlap_ratio": 0.333,
+    "stride": 683,
+    "min_visible_ratio": 0.1,
+    "min_visible_area_px": 100,
+    "min_tile_cortex": 0.1,
+    "keep_empty_tiles": {
+      "train": false,
+      "val": true,
+      "test": true
+    },
+    "arch": {
+      "mask2former": {
+        "yaml": null,
+        "weights": null,
+        "from_model_zoo": false
+      },
+      "maskrcnn": {
+        "yaml": "COCO-InstanceSegmentation/mask_rcnn_R_101_FPN_3x.yaml",
+        "weights": "/work/lead/mk657917/pretrained/model_final_a3ec72.pkl",
+        "from_model_zoo": true
+      }
+    },
+    "train": {
+      "image_size": 1024,
+      "min_scale": 0.5,
+      "max_scale": 2.0,
+      "test_size": 1024,
+      "ims_per_batch": 1,
+      "base_lr": 2.5e-05,
+      "max_iter": 40000,
+      "steps": [
+        28000,
+        36000
+      ],
+      "eval_period": 2500,
+      "checkpoint_period": 2500,
+      "best_metric": "segm/AP",
+      "seed": 42,
+      "lr_schedule": "step",
+      "rot90": false
+    },
+    "infer": {
+      "score_floor": 0.05
+    },
+    "postproc": {
+      "min_confidence": 0.5,
+      "cortex_min_inside": 0.0,
+      "fuse_bb": 0.1,
+      "fuse_mask": 0.1,
+      "border_threshold": 0.25,
+      "border_classes": [
+        "veine",
+        "nsg",
+        "intima",
+        "media"
+      ],
+      "orphan_bb": 0.3,
+      "orphan_mask": 0.3,
+      "hierarchy": {
+        "nsg": {
+          "contains": [
+            "nsg_complet",
+            "nsg_partiel"
+          ],
+          "keep_if_no_child": false
+        },
+        "vaisseau": {
+          "contains": [
+            "intima",
+            "media"
+          ],
+          "keep_if_no_child": true
+        }
+      },
+      "priority_bb": 0.3,
+      "priority_mask": 0.3,
+      "erases": {
+        "tubule_sain": [
+          "tubule_atrophique",
+          "pac",
+          "veine",
+          "intima",
+          "media"
+        ],
+        "tubule_atrophique": [
+          "pac",
+          "veine",
+          "intima",
+          "media"
+        ],
+        "nsg_complet": [
+          "tubule_sain",
+          "tubule_atrophique",
+          "pac",
+          "vaisseau",
+          "veine"
+        ],
+        "nsg_partiel": [
+          "tubule_sain",
+          "tubule_atrophique",
+          "pac",
+          "vaisseau",
+          "veine"
+        ],
+        "nsg": [
+          "tubule_sain",
+          "tubule_atrophique",
+          "pac",
+          "vaisseau",
+          "veine"
+        ],
+        "vaisseau": [
+          "tubule_sain",
+          "tubule_atrophique",
+          "pac",
+          "veine"
+        ],
+        "veine": [
+          "tubule_sain",
+          "tubule_atrophique"
+        ],
+        "pac": [],
+        "intima": [],
+        "media": []
+      },
+      "class_fusion_bb": 0.1,
+      "class_fusion_mask": 0.1,
+      "compatible": [
+        [
+          "nsg_complet",
+          "nsg_partiel"
+        ]
+      ],
+      "class_fusion_prefer": "whole_view",
+      "min_area_px": 50
+    }
+  },
+  "args": {
+    "run": "patient_100k",
+    "split": "test",
+    "work_dir": "/work/lead/mk657917/M2F-ANATOMY/work_patient",
+    "in_dir": "/work/lead/mk657917/M2F-ANATOMY/work_patient/s06_stitch/patient_100k/test_prod_16EH12620/stitched",
+    "out_dir": "/work/lead/mk657917/M2F-ANATOMY/work_patient/s07_postproc/patient_100k/test_prod_16EH12620",
+    "min_confidence": 0.5,
+    "stop_after": 7,
+    "thresholds": "/work/lead/mk657917/M2F-ANATOMY/work_patient/s09_tune/patient_100k/tune_base050/thresholds.json",
+    "fuse_mask": null,
+    "fuse_bb": null,
+    "score_resolve": [
+      [
+        "tubule_sain",
+        "tubule_atrophique"
+      ]
+    ],
+    "unerase": null,
+    "border_threshold": 0.25,
+    "cortex_min_inside": 0.0,
+    "class_fusion_prefer": "whole_view",
+    "tag": "_prod_16EH12620",
+    "limit": 0,
+    "erases": {
+      "tubule_sain": [
+        "pac",
+        "veine",
+        "intima",
+        "media"
+      ],
+      "tubule_atrophique": [
+        "pac",
+        "veine",
+        "intima",
+        "media"
+      ],
+      "nsg_complet": [
+        "tubule_sain",
+        "tubule_atrophique",
+        "pac",
+        "vaisseau",
+        "veine"
+      ],
+      "nsg_partiel": [
+        "tubule_sain",
+        "tubule_atrophique",
+        "pac",
+        "vaisseau",
+        "veine"
+      ],
+      "nsg": [
+        "tubule_sain",
+        "tubule_atrophique",
+        "pac",
+        "vaisseau",
+        "veine"
+      ],
+      "vaisseau": [
+        "tubule_sain",
+        "tubule_atrophique",
+        "pac",
+        "veine"
+      ],
+      "veine": [
+        "tubule_sain",
+        "tubule_atrophique"
+      ],
+      "pac": [],
+      "intima": [],
+      "media": []
+    },
+    "pairs": [
+      [
+        "tubule_sain",
+        "tubule_atrophique"
+      ]
+    ],
+    "per_class_thr": {
+      "tubule_sain": 0.8,
+      "tubule_atrophique": 0.75,
+      "vaisseau": 0.8,
+      "nsg": 0.5,
+      "intima": 0.85,
+      "nsg_partiel": 0.5,
+      "media": 0.6,
+      "veine": 0.8,
+      "nsg_complet": 0.6,
+      "pac": 0.85
+    }
+  },
+  "result": {
+    "n_sources": 1,
+    "funnel": {
+      "input": 4437,
+      "0_confidence": 2071,
+      "0b_cortex": 2071,
+      "1_fusion": 778,
+      "2_border": 778,
+      "3_orphan": 775,
+      "3b_score_resolve": 679,
+      "4_priority": 673,
+      "5_orphan": 672,
+      "6_class_fusion": 669,
+      "7_small": 669
+    },
+    "instances_per_class": {
+      "tubule_sain": 349,
+      "tubule_atrophique": 227,
+      "vaisseau": 19,
+      "nsg": 8,
+      "intima": 17,
+      "nsg_partiel": 4,
+      "media": 15,
+      "veine": 26,
+      "nsg_complet": 4,
+      "pac": 0
+    }
+  }
+}

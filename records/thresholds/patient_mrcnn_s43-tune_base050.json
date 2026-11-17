@@ -1,0 +1,19 @@
+{
+  "run": "patient_mrcnn_s43",
+  "tuned_on": "val",
+  "detect_iou": 0.3,
+  "macro_f1_before": 0.6499,
+  "macro_f1_after": 0.6746,
+  "thresholds": {
+    "tubule_sain": 0.65,
+    "tubule_atrophique": 0.65,
+    "vaisseau": 0.75,
+    "nsg": 0.5,
+    "intima": 0.5,
+    "nsg_partiel": 0.5,
+    "media": 0.5,
+    "veine": 0.6,
+    "nsg_complet": 0.5,
+    "pac": 0.55
+  }
+}
